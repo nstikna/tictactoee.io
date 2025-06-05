@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registration Form</title>
+        <style>
+            .container {
+                position: relative;
+                width: 300px;
+                height: 400px;
+              
+                padding: 40px;
+                border: 3px solid #000000;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+                margin-top: 3%;
+                overflow: hidden; 
+            }
+
+
+            .container::before {
+                content: "";
+                position: absolute;
+                right: 10px;
+                top: 20px;
+                width: 95%;
+                height: 95%;
+                background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/1d/Shri_Dharmasthala_Manjunatheshwara_College_of_Engineering_&_Technology,_Dharwad_coat_of_arms.png');
+                background-size: contain; 
+                background-position: top; 
+                background-repeat: no-repeat;
+                opacity: 0.2; 
+                z-index: 0; 
+            }
+            label{
+                font-weight: bolder;;
+            }
+            body {
+                background-image: url('https://images.unsplash.com/photo-1559456751-057ed03f3143?q=80&w=3001&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+                background-size: cover; /* Cover the entire screen */
+                background-position: center; /* Center the image */
+                background-repeat: no-repeat; /* No tiling */
+                background-attachment: fixed; /* Keeps the background fixed while scrolling */
+            }
+            
+            .container * {
+                position: relative;
+                z-index: 1;
+            }
+
+            h2 {
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                font-weight:900;
+                bottom:20px;
+                font-size: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h1 style="font-size: 40px;">Registration Form</h1>
+            <marquee direction="right" scrollamount="5" ><b>WELCOME TO INSIGNIA 2025 🎉</b></marquee>
+            <form class="container">
+                <h2>INSIGNIA 2025<sup>&copy;</sup></h2>
+                <label for="USN">USN :</label>
+                <input type="text" name="usn" required><br><br>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="name">Address:</label>
+                <input type="text" id="address" name="address" required><br><br>
+                <label for="name">DOB:</label>
+                <input type="date" id="dob" name="dob" required><br><br>
+                <label for="name">Type of event:</label>
+                <select id="event" name="event">
+                    <option value="Singing">Singing</option>
+                    <option value="Dance">Dance</option>
+                    <option value="Drama">Drama</option>
+                </select><br><br><br>
+                <input type="submit" value="Submit">  <input type="reset">  <br><br>
+                <a href="https://sdmcet.ac.in/"><button type="button">View Site 👉</button></a>
+            </form>
+        </center>
+    </body>
+</html>

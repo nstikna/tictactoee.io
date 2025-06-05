@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Enter Player Names</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Raleway", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background-image: url('./gamebg.png'); /* Same background */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 50px 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      animation: fadeInScale 1.2s ease-in-out;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      color: rgb(52, 128, 198);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-size: 1.2rem;
+      color:  rgb(234, 130, 180);
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 15px 30px;
+      background-color: rgb(234, 130, 180);
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgb(234, 130, 180);
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Enter Player Names</h2>
+    <form id="playerForm">
+      <label for="playerX">Player 1 (X):</label>
+      <input type="text" id="playerX" name="playerX" required placeholder="Enter name for X">
+      
+      <label for="playerO">Player 2 (O):</label>
+      <input type="text" id="playerO" name="playerO" required placeholder="Enter name for O">
+      
+      <button type="submit">Proceed to Game</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('playerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const playerX = document.getElementById('playerX').value.trim();
+      const playerO = document.getElementById('playerO').value.trim();
+      
+      if (!playerX || !playerO) {
+        alert("Please enter both player names!");
+        return;
+      }
+
+      // Save to localStorage to retrieve later in game.html
+      localStorage.setItem("playerX", playerX);
+      localStorage.setItem("playerO", playerO);
+
+      // Redirect to game
+      window.location.href = "home.html";
+    });
+  </script>
+</body>
+</html>

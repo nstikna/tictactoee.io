@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to Tic Tac Toe</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Raleway", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background-image: url('./gamebg.png'); /* Use same background */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 40px 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      animation: fadeInScale 1.2s ease-in-out;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: rgb(52, 128, 198);
+      margin-bottom: 20px;
+      animation: slideIn 1s ease forwards;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: rgb(234, 130, 180);
+      margin-bottom: 30px;
+    }
+
+    a.start-btn {
+      padding: 15px 30px;
+      background-color: rgb(234, 130, 180);
+      color: rgb(255, 255, 255);
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-block;
+      animation: popUp 1.5s ease forwards;
+    }
+
+    a.start-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgb(234, 130, 198);
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes popUp {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    a.start-btn, button.start-btn {
+  padding: 15px 30px;
+  background-color: rgb(234, 130, 180);
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+  animation: popUp 1.5s ease forwards;
+}
+
+a.start-btn:hover, button.start-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgb(234, 130, 198);
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Welcome to<br><span style="color: rgb(52, 128, 198);">Tic Tac Toe</span></h1>
+    <p>Ready to challenge your brain and have some fun?</p>
+    <!-- Use a button instead of <a> to control navigation timing -->
+ <button class="start-btn" onclick="startGame()">Let's Start the Game</button>
+  </div>
+
+  <!-- 🔊 Hidden audio -->
+  <audio id="introSound" src="./mixkit-unlock-game-notification-253.mp3" preload="auto"></audio>
+
+  <script>
+    function startGame() {
+      const sound = document.getElementById("introSound");
+
+      // Play sound and delay navigation
+      sound.play().then(() => {
+        setTimeout(() => {
+          window.location.href = "name.html";
+        }, sound.duration * 1000); // Wait for full sound duration
+      }).catch(err => {
+        console.warn("Autoplay blocked or failed:", err);
+        // Fallback: proceed immediately
+        window.location.href = "name.html";
+      });
+    }
+  </script>
+</body>
+</html>

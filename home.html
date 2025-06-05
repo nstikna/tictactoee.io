@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tic Tac Toe</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Raleway", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background-image: url('./gamebg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .container2 {
+      width: 60vmin;
+      height: 60vmin;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2vmin;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button-option {
+      background: rgb(246, 197, 100);
+      height: 18vmin;
+      width: 18vmin;
+      border: none;
+      border-radius: 8px;
+      font-size: 10vmin;
+      color: white;
+      box-shadow: 0 0 15px rgb(245, 244, 242);
+      cursor: pointer;
+    }
+
+    #restart {
+      font-size: 1.3em;
+      padding: 1em 2em;
+      border-radius: 8px;
+      background-color: rgb(234, 130, 180);
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #restart:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgb(234, 130, 180);
+    }
+
+
+    h4 {
+      font-family: Poppins, sans-serif;
+      font-size: 2rem;
+      margin-top: -30px;
+      color:rgb(246, 115, 178);
+      text-align: center;
+    }
+
+    .popup {
+      background: rgba(242, 163, 192, 0.79);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 2rem;
+      gap: 20px;
+    }
+
+    .popup.hide {
+      display: none;
+    }
+
+    #new-game {
+      font-size: 1.2rem;
+      padding: 0.5em 1.5em;
+      background-color: #0a0027;
+      color: #ffffff;
+      border-radius: 0.3em;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+     transition: 0.3s;
+    }
+    #new-game:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgb(234, 130, 180);
+    }
+    #message {
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    img {
+      max-width: 450px;
+      margin-bottom:-2em;
+      margin-top:-4em;
+    }
+  </style>
+  <!-- Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <img src="./2025-06-04-Tic-Tac-Toe.gif" alt="Tic Tac Toe">
+    <h4 id="greetMsg"></h4>
+    <div class="container2">
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+      <button class="button-option"></button>
+    </div>
+    <button id="restart">Restart</button>
+  </div>
+
+  <div class="popup hide">
+    <p id="message">Sample Message</p>
+    <button id="new-game"><a href="index.html" style="text-decoration: none; color: #ffffff;">New Game</a></div></button>
+  </div>
+
+  <!-- SOUND EFFECTS -->
+  <audio id="winSound" src="./mixkit-video-game-win-2016.mp3" preload="auto"></audio>
+  <audio id="drawSound" src="./mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+
+  <script>
+    const btnRef = document.querySelectorAll(".button-option");
+    const popupRef = document.querySelector(".popup");
+    const newgameBtn = document.getElementById("new-game");
+    const restartBtn = document.getElementById("restart");
+    const msgRef = document.getElementById("message");
+    const greetMsg = document.getElementById("greetMsg");
+
+    const winSound = document.getElementById("winSound");
+    const drawSound = document.getElementById("drawSound");
+
+    // Get player names from localStorage
+    const playerX = localStorage.getItem("playerX") || "Player X";
+    const playerO = localStorage.getItem("playerO") || "Player O";
+
+    greetMsg.innerText = `Welcome ${playerX} (X) and ${playerO} (O)`;
+
+    const winningPattern = [
+      [0, 1, 2],
+      [0, 3, 6],
+      [2, 5, 8],
+      [6, 7, 8],
+      [3, 4, 5],
+      [1, 4, 7],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    let xTurn = true;
+    let count = 0;
+
+    const disableButtons = () => {
+      btnRef.forEach((element) => (element.disabled = true));
+      popupRef.classList.remove("hide");
+    };
+
+    const enableButtons = () => {
+      btnRef.forEach((element) => {
+        element.innerText = "";
+        element.disabled = false;
+      });
+      popupRef.classList.add("hide");
+    };
+
+    const triggerConfetti = () => {
+      const duration = 2 * 1000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+    };
+
+    const winFunction = (letter) => {
+      const winner = letter === "X" ? playerX : playerO;
+      disableButtons();
+      msgRef.innerHTML = `🎉<br>${winner} Wins as '${letter}'!`;
+      winSound.play();
+      triggerConfetti();
+    };
+
+   const drawFunction = () => {
+  disableButtons();
+  msgRef.innerHTML = '<i class="fas fa-handshake"></i><br>It\'s a Draw!';
+  drawSound.play();
+  triggerConfetti();
+};
+    const winChecker = () => {
+      for (let i of winningPattern) {
+        let [a, b, c] = [
+          btnRef[i[0]].innerText,
+          btnRef[i[1]].innerText,
+          btnRef[i[2]].innerText,
+        ];
+        if (a !== "" && a === b && b === c) {
+          winFunction(a);
+          return;
+        }
+      }
+      if (count === 9) drawFunction();
+    };
+
+    btnRef.forEach((element) => {
+      element.addEventListener("click", () => {
+        element.innerText = xTurn ? "X" : "O";
+        element.disabled = true;
+        xTurn = !xTurn;
+        count++;
+        winChecker();
+      });
+    });
+
+    newgameBtn.addEventListener("click", () => {
+      count = 0;
+      enableButtons();
+    });
+
+    restartBtn.addEventListener("click", () => {
+      count = 0;
+      enableButtons();
+    });
+
+    window.onload = enableButtons;
+  </script>
+</body>
+</html>
